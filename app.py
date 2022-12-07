@@ -44,10 +44,14 @@ def buy(user_id):
 def deposit(user_id):
     # contains everything incl. querystring
     upstream_url = request.full_path.removeprefix("/mete")
-    deposit_response = get(f"{METE_BASEURL}{upstream_url}")
-    if not deposit_response.ok:
-        abort(500, deposit_response)
+    # deposit_response = get(f"{METE_BASEURL}{upstream_url}")
+    # if not deposit_response.ok:
+    #     abort(500, deposit_response)
 
     if "X-STORNO" in request.headers:
-        mastodon.toot(f"STORNO")
+        # puh. we need to make this async. but flask can't handle background tasks
+        media = mastodon.media_post(
+            "storno.mp4", description="flashing animation of STORNO", synchronous=True
+        )
+        mastodon.status_post(f"STORNO", media_ids=[media.id])
     return "", 204
