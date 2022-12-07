@@ -43,15 +43,9 @@ def buy(user_id):
 
 @app.route("/mete/api/v1/users/<int:user_id>/deposit", methods=["GET"])
 def deposit(user_id):
-    args = request.args
-    try:
-        amount = args.get("amount")
-    except KeyError:
-        abort(400)
-
-    deposit_response = get(
-        f"{METE_BASEURL}/api/v1/users/{user_id}/deposit?amount={amount}"
-    )
+    # contains everything incl. querystring
+    upstream_url = request.full_path.removeprefix("/mete")
+    deposit_response = get(f"{METE_BASEURL}{upstream_url}")
     if not deposit_response.ok:
         abort(500, deposit_response)
 
