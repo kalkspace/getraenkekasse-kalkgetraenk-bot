@@ -38,4 +38,23 @@ def buy(user_id):
     drink_name = drink["name"]
     mastodon.toot(f"{drink_name}!")
 
-    return "Hello, World!"
+    return buy_response.json()
+
+
+@app.route("/mete/api/v1/users/<int:user_id>/deposit", methods=["GET"])
+def deposit(user_id):
+    args = request.args
+    try:
+        amount = args.get("amount")
+    except KeyError:
+        abort(400)
+
+    deposit_response = get(
+        f"{METE_BASEURL}/api/v1/users/{user_id}/deposit?amount={amount}"
+    )
+    if not deposit_response.ok:
+        abort(500, deposit_response)
+
+    if "X-STORNO" in request.headers:
+        mastodon.toot(f"STORNO")
+    return deposit_response.json()
