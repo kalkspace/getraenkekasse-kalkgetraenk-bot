@@ -37,8 +37,7 @@ def buy(user_id):
 
     drink_name = drink["name"]
     mastodon.toot(f"{drink_name}!")
-
-    return buy_response.json()
+    return "", 204
 
 
 @app.route("/mete/api/v1/users/<int:user_id>/deposit", methods=["GET"])
@@ -51,4 +50,4 @@ def deposit(user_id):
 
     if "X-STORNO" in request.headers:
         mastodon.toot(f"STORNO")
-    return deposit_response.json()
+    return "", 204
