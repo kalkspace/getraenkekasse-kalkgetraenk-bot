@@ -6,6 +6,8 @@ RUN pip install pipenv
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy
 
-COPY app.py .
+COPY app.py wsgi.py ./
 
-ENTRYPOINT FLASK_APP=/usr/src/app.py flask run --host=0.0.0.0
+EXPOSE 8000
+
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "wsgi:app"]

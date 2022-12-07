@@ -7,6 +7,7 @@ name = "pypi"
 "mastodon.py" = "*"
 flask = "*"
 requests = "*"
+gunicorn = "*"
 
 [dev-packages]
 
