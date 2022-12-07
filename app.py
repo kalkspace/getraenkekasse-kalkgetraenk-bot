@@ -40,7 +40,7 @@ def buy(user_id):
     return "", 204
 
 
-@app.route("/mete/api/v1/users/<int:user_id>/deposit", methods=["GET"])
+@app.route("/mete/users/<int:user_id>/deposit", methods=["GET"])
 def deposit(user_id):
     # contains everything incl. querystring
     upstream_url = request.full_path.removeprefix("/mete")
